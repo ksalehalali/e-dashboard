@@ -1,0 +1,19 @@
+.upload {
+  position: relative;
+}
+.upload:hover .edit_btn {
+  opacity: 1;
+}
+.edit_btn {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}

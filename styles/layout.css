@@ -1,0 +1,15 @@
+.container__layout {
+  display: flex;
+}
+
+.container__sidebar {
+  width: 15%;
+}
+
+.container__main {
+  /* Take the remaining width */
+  flex: 1;
+
+  /* Make it scrollable */
+  overflow: auto;
+}
