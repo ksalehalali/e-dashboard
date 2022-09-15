@@ -427,7 +427,7 @@ function ProductsPage() {
           let id = filters?.id;
           if (id) {
             console.log("MUST RELOD");
-            executeFetch({ CatID: id[0] });
+            executeFetch({ catID: id[0] });
             return null;
           }
         }}
