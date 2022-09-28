@@ -13,6 +13,7 @@ import {
   Alert,
   Row,
   Col,
+  Modal,
   Input,
   Upload,
   Button,
@@ -30,7 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 // styles
 import style from "./style.module.css";
 
-import { DeleteFilled, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { DeleteFilled,  DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { withCookies } from "react-cookie";
 
 function AddProduct({ allCookies, ...rest }) {
@@ -217,12 +218,62 @@ function AddProduct({ allCookies, ...rest }) {
       brandExecuteFetch();
     }
   };
+ // delete data
+ const {
+  data: deleteData = {},
+  error: deleteError,
+  loading: deleteLoading,
+  executeFetch: deleteExecuteFetch,
+} = useFetch(
+  process.env.NEXT_PUBLIC_HOST_API + process.env.NEXT_PUBLIC_DELETE_PRODUCT,
+  "post",
+  {},
+
+  false
+);
+const {
+  data = [],
+  error,
+  loading,
+  executeFetch,
+} = useFetch(
+  process.env.NEXT_PUBLIC_HOST_API + process.env.NEXT_PUBLIC_LIST_PRODUCT,
+  "post",
+  {},
+  false
+  // {
+  //   headers: {
+  //     Authorization: `Bearer ${token}`,
+  //   },
+  // }
+);
+
+  // useEffect for delete Item
+  useEffect(() => {
+    if (deleteData?.status === true) {
+      executeFetch();
+      message.success("Product has been deleted successfully!");
+    } else if (deleteData?.status === false) {
+      message.error(
+        deleteError ?? "Something went wrong! Please try again later"
+      );
+    }
+  }, [deleteData, deleteError, deleteLoading]);
+  const handleDeleteItem = (id) => {
+    Modal.confirm({
+      title: "Are you sure about delete this product",
+      content: <div>this product will be deleted forever !</div>,
+      onOk() {
+        deleteExecuteFetch({ id });
+      },
+    });
+  };
 
   //useEffect for adding data
   useEffect(() => {
     if (addData?.status === true) {
       message.success("product has been added.");
-      router.push("/product-management/product");
+      router.push(`/product-management/product/edit-product?id=${addData?.description?.id}`);
     } else if (addData?.status === false) {
       message.error(addError ?? "Something went wrong! Please try again later");
     }
@@ -271,6 +322,8 @@ function AddProduct({ allCookies, ...rest }) {
   useEffect(() => {
     if (editData?.status === true) {
       message.success("Category has been edited.");
+      router.push(`/product-management/product/edit-product?id=${addData?.description?.id}`);
+   
     } else if (editData?.status === false) {
       message.error(
         editError ?? "Something went wrong! Please try again later"
@@ -280,6 +333,7 @@ function AddProduct({ allCookies, ...rest }) {
 
   return (
     <Main>
+  
       <div className={style.box}>
         <Form form={form} layout="vertical" onFinish={handleFormOnFinish}>
           <Row>
@@ -344,9 +398,20 @@ function AddProduct({ allCookies, ...rest }) {
             </Col>
 
             <Col span={12}>
-              <Row gutter={24}>
-                <Col span={24}>
+              <Row gutter={[24,32]}>
+                <Col span={12}>
                   <h2>Product Information</h2>{" "}
+                </Col>
+                <Col span={12}>
+               <h2> <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              handleDeleteItem(addData?.description?.id);
+            }}
+          >
+            <DeleteOutlined style={{ color: "#f70202" ,marginLeft:'0px'}} />
+          </a>{" "}</h2>
                 </Col>
                 <Col span={24}>
                   <Form.Item name="Cat_id" label="Parent Category">
