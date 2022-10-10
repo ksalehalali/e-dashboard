@@ -1,10 +1,12 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
-
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import React from "react";
-
+import { drawerType_AddImageToProperty } from "@/redux/drawer/constants";
+import { openDrawer } from "@/redux/drawer/action";
+import { IoMdImages } from "react-icons/io";
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
 // components
@@ -14,12 +16,16 @@ import {
   Row,
   Col,
   Modal,
+  Space,
   Input,
   Upload,
   Button,
   message,
   Select,
   Divider,
+  Tooltip,
+  Dropdown,
+  Menu
 } from "antd";
 import UploadFileComponent from "../../../components/upload-file/upload-file";
 import Main from "../../../components/layout/main";
@@ -31,13 +37,19 @@ import { useDispatch, useSelector } from "react-redux";
 // styles
 import style from "./style.module.css";
 
-import { DeleteFilled,  DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { DeleteFilled,CameraOutlined,
+  
+  EditOutlined,
+ 
+  DownOutlined,  DeleteOutlined,  PlusOutlined } from "@ant-design/icons";
 import { withCookies } from "react-cookie";
 
 function AddProduct({ allCookies, ...rest }) {
   const router = useRouter();
-  const { id } = router.query;
+  const { id,name,image } = router.query;
 
+
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
 
   const [newImage, setNewImage] = useState({
@@ -53,7 +65,7 @@ function AddProduct({ allCookies, ...rest }) {
   const [img, setImg] = useState(null);
   const [value, setValue] = useState("");
   const [valueAr, setValueAr] = useState("");
-
+  const [newId,setNewId]=useState("");
   console.log("id");
   console.log(id);
 
@@ -71,7 +83,7 @@ function AddProduct({ allCookies, ...rest }) {
     error: addError,
     loading: addLoading,
     executeFetch: addExecuteFetch,
-  } = useFetch(addDataUrl, "post", {}, false);
+  } = useFetch(addDataUrl, "post", {id ,image}, false);
   const {
     data: editData = {},
     error: editError,
@@ -228,7 +240,6 @@ function AddProduct({ allCookies, ...rest }) {
   process.env.NEXT_PUBLIC_HOST_API + process.env.NEXT_PUBLIC_DELETE_PRODUCT,
   "post",
   {},
-
   false
 );
 const {
@@ -253,6 +264,7 @@ const {
     if (deleteData?.status === true) {
       executeFetch();
       message.success("Product has been deleted successfully!");
+      router.push(`/product-management/product`);
     } else if (deleteData?.status === false) {
       message.error(
         deleteError ?? "Something went wrong! Please try again later"
@@ -273,7 +285,8 @@ const {
   useEffect(() => {
     if (addData?.status === true) {
       message.success("product has been added.");
-      router.push(`/product-management/product/edit-product?id=${addData?.description?.id}`);
+      setNewId(addData?.description?.id);
+      router.push(`/product-management/product/edit-product?id=${addData?.description?.id}&name=${addData?.description?.name_EN}&image=${addData?.description?.image}`);
     } else if (addData?.status === false) {
       message.error(addError ?? "Something went wrong! Please try again later");
     }
@@ -322,7 +335,7 @@ const {
   useEffect(() => {
     if (editData?.status === true) {
       message.success("Category has been edited.");
-      router.push(`/product-management/product/edit-product?id=${addData?.description?.id}`);
+      router.push(`/product-management/product/edit-product?id=${addData?.description?.id}&image=${addData?.description?.image}&name=${addData?.description?.name_EN}`);
    
     } else if (editData?.status === false) {
       message.error(
@@ -330,7 +343,83 @@ const {
       );
     }
   }, [editData, editError, editLoading]);
+console.log("new id");
+console.log(newId);
+const menu = (
+  <Menu>
+    <Menu.Item key="1">
+      <a
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          handleDeleteItem(id);
+        }}
+      >
+        <DeleteOutlined style={{ color: "#f70202" }} />
+      </a>
+    </Menu.Item>
+    <Menu.Item key="2">
+      <a
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          editExecuteFetch(id, image);
+        }}
+      >
+        <EditOutlined style={{ color: "#1dd3d5" }} />
+      </a>
+    </Menu.Item>
 
+    <Menu.Item key="3">
+          <Tooltip placement="top" title="Add Images">
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                dispatch(
+                  openDrawer(
+                    drawerType_AddImageToProperty,
+                    null,
+                    {
+                      productId: id,
+                      productName: name,
+                    },
+                    false
+                  )
+                );
+              }}
+            >
+              <CameraOutlined style={{ color: "orange" }} />
+            </a>
+          </Tooltip>
+        </Menu.Item>
+    <Menu.Item key="4">
+      <Link
+        href={`/product-management/product/images?id=${id}&name=${name}`}
+      >
+        <Tooltip placement="top" title="All Images">
+          <a href="#">
+            <IoMdImages style={{ color: "green", fontSize: 18 }} />
+          </a>
+        </Tooltip>
+      </Link>
+    </Menu.Item>
+    <Menu.Item key="5">
+      <Link
+        href={`/product-management/product/products-property?id=${id}&name=${name}`}
+      >
+        General Properties
+      </Link>
+    </Menu.Item>
+    <Menu.Item key="6">
+      <Link
+        href={`/product-management/product/special-adjective?id=${id}&name=${name}`}
+      >
+        Special Product
+      </Link>
+    </Menu.Item>
+  </Menu>
+);
   return (
     <Main>
   
@@ -402,16 +491,23 @@ const {
                 <Col span={12}>
                   <h2>Product Information</h2>{" "}
                 </Col>
+             
                 <Col span={12}>
-               <h2> <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              handleDeleteItem(addData?.description?.id);
-            }}
-          >
-            <DeleteOutlined style={{ color: "#f70202" ,marginLeft:'0px'}} />
-          </a>{" "}</h2>
+                
+ 
+   
+      <Space size="large">
+        <Dropdown overlay={menu} trigger={["click"]}>
+          <a onClick={(e) => e.preventDefault()}>
+            <Space>
+              Actions
+              <DownOutlined />
+            </Space>
+          </a>
+        </Dropdown>
+      </Space>
+    
+
                 </Col>
                 <Col span={24}>
                   <Form.Item name="Cat_id" label="Parent Category">
