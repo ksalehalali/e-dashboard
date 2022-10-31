@@ -1,9 +1,11 @@
 //components
-import { Table, Space, Modal, Popover, Radio, Button, message } from "antd";
-
+import { Space, Modal, Popover, Radio, Button, message } from "antd";
+import { Table } from "ant-table-extensions";
 // hooks
 import useFetch from "../../utils/useFetch";
 // layout
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 import Main from "../layout/main";
 import {
   DeleteOutlined,
@@ -12,6 +14,7 @@ import {
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 //style
+
 function PendingOrder() {
   const [tableData, setTableData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,7 +23,8 @@ function PendingOrder() {
     target: null,
     value: false,
   });
-
+  const [data1, setData1] = useState([]);
+  const fileName = "myfile";
   const {
     data = [],
     error,
@@ -29,7 +33,7 @@ function PendingOrder() {
   } = useFetch(
     process.env.NEXT_PUBLIC_HOST_API +
       process.env.NEXT_PUBLIC_LIST_PENDING_ORDER,
-    "post"
+    "post",{PageSize:1000}
   );
 
   const {
@@ -64,7 +68,12 @@ function PendingOrder() {
       });
     }
   }, [editData, editError, editLoading]);
-
+  useEffect(() => {
+    if (data?.status === true && !loading) {
+      setData1(data?.description);
+     
+    }
+  }, [data, error, loading]);
   useEffect(() => {
     if (data?.status === true && !loading) {
       // {
@@ -91,7 +100,17 @@ function PendingOrder() {
       }
     }
   }, [data, error, loading]);
+  const fileType =
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+const fileExtension = ".xlsx";
 
+const exportToCSV = (data1, fileName) => {
+  const ws = XLSX.utils.json_to_sheet(data1);
+  const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+  const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+  const data = new Blob([excelBuffer], { type: fileType });
+  FileSaver.saveAs(data, fileName + fileExtension);
+};
   const handleEditItem = (id, v) => {
     setValue(v?.target?.value);
     editExecuteFetch({ id, Status: v?.target?.value });
@@ -208,19 +227,21 @@ function PendingOrder() {
 
   return (
     <Main>
+    
       <Table
         columns={columns}
         rowKey={"id"}
-        pagination={{
-          onChange: (page) => {
-            setCurrentPage(page);
-          },
-          total: data?.total,
-          current: currentPage,
-        }}
-        dataSource={tab_data?.data}
+        // pagination={{
+        //   onChange: (page) => {
+        //     setCurrentPage(page);
+        //   },
+        //   total: data?.total,
+        //   current: currentPage,
+        // }}
+        dataSource={data?.description}
         size="small"
         loading={loading}
+        exportable
       />
     </Main>
   );

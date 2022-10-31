@@ -1,6 +1,5 @@
 //components
 import {
-  Table,
   Space,
   Modal,
   Popover,
@@ -13,6 +12,7 @@ import {
   message,
   Tooltip,
 } from "antd";
+import { Table } from "ant-table-extensions";
 import Link from "next/link";
 // hooks
 import useFetch from "../../utils/useFetch";
@@ -35,7 +35,7 @@ function AllOrder() {
     error,
     loading,
     executeFetch,
-  } = useFetch(" https://dashcommerce.click68.com/api/AllOrder", "post");
+  } = useFetch(" https://dashcommerce.click68.com/api/AllOrder", "post",{PageSize:1000});
 
   const showModal = (target) => {
     setIsModalVisible({ target: target, value: true });
@@ -181,16 +181,17 @@ function AllOrder() {
       <Table
         columns={columns}
         rowKey={"id"}
-        pagination={{
-          onChange: (page) => {
-            setCurrentPage(page);
-          },
-          total: data?.total,
-          current: currentPage,
-        }}
-        dataSource={tab_data?.data}
+        // pagination={{
+        //   onChange: (page) => {
+        //     setCurrentPage(page);
+        //   },
+        //   total: data?.total,
+        //   current: currentPage,
+        // }}
+        dataSource={data?.description}
         size="small"
         loading={loading}
+        exportable
       />
     </Main>
   );
