@@ -33,7 +33,7 @@ function PendingOrder() {
   } = useFetch(
     process.env.NEXT_PUBLIC_HOST_API +
       process.env.NEXT_PUBLIC_LIST_PENDING_ORDER,
-    "post",{PageSize:1000}
+    "post", {PageSize:1000}
   );
 
   const {
@@ -71,7 +71,6 @@ function PendingOrder() {
   useEffect(() => {
     if (data?.status === true && !loading) {
       setData1(data?.description);
-     
     }
   }, [data, error, loading]);
   useEffect(() => {
