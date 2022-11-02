@@ -98,7 +98,10 @@ function CategoryModal({ visible, allCookies }) {
       formData.append("id", editId);
       formData.append("Name_ar", form.getFieldValue("Name_ar"));
       formData.append("Name_en", form.getFieldValue("Name_en"));
-      formData.append("Cat_Id", form.getFieldValue("Cat_id"));
+      formData.append(
+        "Cat_Id",
+        form.getFieldValue("Cat_id") ? form.getFieldValue("Cat_id") : ""
+      );
       if (newImage.file) {
         formData.append("Image", newImage.file);
       }

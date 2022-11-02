@@ -60,8 +60,10 @@ const useFetch = (
       } catch (err) {
         if (err?.response?.status === 401 && err?.response?.status === 403 ) {
           // dispatch(startLogout());
+        
+          removeCookie("user");
           router.push("/login");
-          clearCookies("user");
+         
         }
       }
     },
