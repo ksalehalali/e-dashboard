@@ -14,31 +14,31 @@ import DrawerContainer from "@/components/drawer-container/drawer-container";
 import "antd/dist/antd.css";
 import "../styles/main.css";
 import "../styles/responsive.css";
-import "../styles/globals.css";
+import "../styles/globals.scss";
 import "@ant-design/flowchart/dist/index.css";
 
 import RealTime from "@/components/utils/real-time";
 
 function MyApp({ Component, pageProps }) {
-  const store = useStore(pageProps.initialReduxState);
+    const store = useStore(pageProps.initialReduxState);
 
-  const [cookies, setCookies, clearCookies] = useCookies(["user"]);
+    const [cookies, setCookies, clearCookies] = useCookies(["user"]);
 
-  console.log("cookies");
-  console.log(cookies);
+    console.log("cookies");
+    console.log(cookies);
 
-  return (
-    <Provider store={store}>
-      {cookies?.user && <RealTime cookies={cookies?.user} />}
-      <CookiesProvider>
-        <Component {...pageProps} />
-      </CookiesProvider>
-      <ModalContainer />
-      <DrawerContainer />
-    </Provider>
-  );
+    return (
+        <Provider store={store}>
+            {cookies?.user && <RealTime cookies={cookies?.user} />}
+            <CookiesProvider>
+                <Component {...pageProps} />
+            </CookiesProvider>
+            <ModalContainer />
+            <DrawerContainer />
+        </Provider>
+    );
 }
 
 export default dynamic(() => Promise.resolve(MyApp), {
-  ssr: false,
+    ssr: false,
 });

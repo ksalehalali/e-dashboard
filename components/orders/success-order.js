@@ -1,5 +1,6 @@
 //components
-import { Table, Space, Modal, Popover, Radio, Button, message } from "antd";
+import {  Space, Modal, Popover, Radio, Button, message } from "antd";
+import { Table } from "ant-table-extensions";
 
 // hooks
 import useFetch from "../../utils/useFetch";
@@ -28,7 +29,7 @@ function SuccessOrder() {
   } = useFetch(
     process.env.NEXT_PUBLIC_HOST_API +
       process.env.NEXT_PUBLIC_LIST_SUCCESS_ORDER,
-    "post"
+    "post",{PageSize:1000}
   );
 
   const {
@@ -39,7 +40,7 @@ function SuccessOrder() {
   } = useFetch(
     "https://dashcommerce.click68.com/api/EditeStatusOrder",
     "post",
-    {},
+    
     false
   );
 
@@ -209,16 +210,17 @@ function SuccessOrder() {
       <Table
         columns={columns}
         rowKey={"id"}
-        pagination={{
-          onChange: (page) => {
-            setCurrentPage(page);
-          },
-          total: data?.total,
-          current: currentPage,
-        }}
-        dataSource={tab_data?.data}
+        // pagination={{
+        //   onChange: (page) => {
+        //     setCurrentPage(page);
+        //   },
+        //   total: data?.total,
+        //   current: currentPage,
+        // }}
+        dataSource={data?.description}
         size="small"
         loading={loading}
+        exportable
       />
     </Main>
   );
