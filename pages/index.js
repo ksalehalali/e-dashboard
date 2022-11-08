@@ -7,18 +7,18 @@ import Main from "../components/layout/main";
 
 // import sound from "assets/pristine-609.mp3";
 export default function Home() {
-  return (
-    <div>
-      <Head>
-        <title>Dashboard</title>
-        <meta name="description" content="Next.js Dashboard" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Main>
+    return (
         <div>
-          <HomePage />
+            <Head>
+                <title>Dashboard</title>
+                <meta name="description" content="Next.js Dashboard" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+            <Main>
+                <div>
+                    <HomePage />
+                </div>
+            </Main>
         </div>
-      </Main>
-    </div>
-  );
+    );
 }
