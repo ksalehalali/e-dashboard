@@ -105,13 +105,12 @@ function HomePage({ allCookies }) {
 
     useEffect(() => {
         const getData = async () => {
-            const { data: TotalCategory } = await axios
-                .get("https://dashcommerce.click68.com/api/totalCategory", {
+            const { data: TotalCategory } = await axios.get("https://dashcommerce.click68.com/api/totalCategory", {
                     headers: {
                         Authorization: `Bearer ${allCookies?.user?.token}`,
                     },
                 })
-                .catch((err) => console.error(err));
+                //.catch((err) => console.error(err));
             const { data: TotalProduct } = await axios.get(
                 "https://dashcommerce.click68.com/api/totalProduct",
                 {
