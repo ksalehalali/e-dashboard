@@ -78,6 +78,7 @@ function Brand() {
             src={process.env.NEXT_PUBLIC_HOST_API + data.image}
             width={65}
             height={65}
+            alt="image"
           />
         );
       },
