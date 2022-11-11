@@ -105,7 +105,6 @@ function ProductsPage() {
         {},
         false
     );
-
     // delete data
     const {
         data: deleteData = {},
@@ -439,7 +438,6 @@ function ProductsPage() {
                         return null;
                     }
                 }}
-                
             />
         </Main>
     );
