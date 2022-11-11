@@ -5,7 +5,6 @@ import {
   Form,
   Row,
   Col,
-  Table,
   Input,
   Button,
   Space,
@@ -16,6 +15,7 @@ import {
   EditOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
+import { Table } from "ant-table-extensions";
 // redux
 import { useDispatch } from "react-redux";
 import { openModal } from "../../redux/modal/action";
@@ -158,6 +158,7 @@ function CategoryPage() {
         columns={columns}
         dataSource={data?.description}
         size="small"
+        exportable
       />
     </Main>
   );

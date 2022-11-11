@@ -550,6 +550,21 @@ function Side({ color, handleLogout }) {
                         </a>
                     </Link>
                 </Menu.Item>
+                <Menu.Item key="34">
+                    <Link href="/user">
+                        <a className={page === "user" ? "active" : ""}>
+                            <span
+                                className="icon"
+                                style={{
+                                    background: page === "user" ? color : "",
+                                }}
+                            >
+                                {role}
+                            </span>
+                            <span className="label">Users</span>
+                        </a>
+                    </Link>
+                </Menu.Item>
 
                 <Menu.Item key="6">
                     <Link href="/profile">
