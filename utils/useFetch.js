@@ -31,7 +31,6 @@ const useFetch = (
             setError(null);
             let _data = isFormData === true ? data : { ...params, ...data };
             try {
-                console.log(_data, isFormData);
                 const { data: response } = await axios({
                     method: method,
                     url: url,
