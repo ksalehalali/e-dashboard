@@ -105,7 +105,6 @@ function ProductsPage() {
         {},
         false
     );
-
     // delete data
     const {
         data: deleteData = {},
@@ -430,6 +429,8 @@ function ProductsPage() {
                 size="small"
                 onChange={(pagination, filters, sorter, extra) => {
                     console.log("filters", filters);
+                    console.log(extra.currentDataSource)
+                    console.log("filtersm");
                     let id = filters?.id;
                     if (id) {
                         console.log("MUST RELOD");

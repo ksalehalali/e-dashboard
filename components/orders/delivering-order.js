@@ -1,15 +1,20 @@
 //components
-import { Table, Space, Modal, Popover, Radio, Button, message } from "antd";
-
+import {  Space, Modal, Popover, Radio, Button, message } from "antd";
+import { Table } from "ant-table-extensions";
 // hooks
 import useFetch from "../../utils/useFetch";
 // layout
 import Main from "../layout/main";
 import { WarningOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
+
 //style
 function DeliveringOrder() {
   const [tableData, setTableData] = useState([]);
+  const [data1, setData1] = useState([]);
+  const fileName = "myfile";
   const [currentPage, setCurrentPage] = useState(1);
   const [value, setValue] = useState(2);
   const [isModalVisible, setIsModalVisible] = useState({
@@ -25,8 +30,14 @@ function DeliveringOrder() {
   } = useFetch(
     process.env.NEXT_PUBLIC_HOST_API +
       process.env.NEXT_PUBLIC_LIST_DELIVERING_ORDER,
-    "post"
+    "post",{PageSize:1000}
   );
+  useEffect(() => {
+    if (data?.status === true && !loading) {
+      setData1(data?.description);
+     
+    }
+  }, [data, error, loading]);
   const {
     data: editData = {},
     error: editError,
@@ -98,7 +109,17 @@ function DeliveringOrder() {
       }
     }
   }, [data, error, loading]);
+  const fileType =
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+const fileExtension = ".xlsx";
 
+const exportToCSV = (data1, fileName) => {
+  const ws = XLSX.utils.json_to_sheet(data1);
+  const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+  const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+  const data = new Blob([excelBuffer], { type: fileType });
+  FileSaver.saveAs(data, fileName + fileExtension);
+};
   // table column
   const columns = [
     {
@@ -202,6 +223,8 @@ function DeliveringOrder() {
 
   return (
     <Main>
+        {/* <button onClick={(e) => exportToCSV(data1, fileName)}>Export</button> */}
+
       <Table
         columns={columns}
         rowKey={"id"}
@@ -215,6 +238,7 @@ function DeliveringOrder() {
         dataSource={tab_data?.data}
         size="small"
         loading={loading}
+        exportable
       />
     </Main>
   );

@@ -441,6 +441,7 @@ function AddImagePropertyDrawer({ visible }) {
                               width={100}
                               height={100}
                               src={fileList.image1.prevFile}
+                              alt="image"
                             />
                             <a
                               href="#"
@@ -464,6 +465,7 @@ function AddImagePropertyDrawer({ visible }) {
                               <Image
                                 width={100}
                                 height={100}
+                                alt="image"
                                 src={fileList.image2.prevFile}
                               />
                               <a
@@ -490,6 +492,7 @@ function AddImagePropertyDrawer({ visible }) {
                                 width={100}
                                 height={100}
                                 src={fileList.image3.prevFile}
+                                alt="image"
                               />
                               <a
                                 href="#"
@@ -514,6 +517,7 @@ function AddImagePropertyDrawer({ visible }) {
                               <Image
                                 width={100}
                                 height={100}
+                                alt="image"
                                 src={fileList.image4.prevFile}
                               />
                               <a
