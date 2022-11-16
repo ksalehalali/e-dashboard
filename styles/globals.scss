@@ -20,11 +20,31 @@ h6 {
   margin: 0;
   padding: 0;
 }
-
+.ant-progress-inner {
+  width: 50px !important;
+  height: 50px !important;
+  font-size: 12px !important;
+  margin: 10px !important;
+}
+.column {
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.center {
+  justify-content: center;
+  align-items: center;
+}
 * {
   box-sizing: border-box;
 }
-
+.add-banner-tag {
+  padding: 7px 25px !important;
+  column-gap: 11px;
+  &:hover {
+    color: #0a58ca !important;
+  }
+}
 .banner__container {
   display: flex;
   flex-direction: column;
@@ -33,25 +53,79 @@ h6 {
   align-items: center;
   padding: 50px;
   row-gap: 50px;
-  .banner {
+
+  .banner-list {
+    row-gap: 10px;
+    column-gap: 10px;
+
+    .image-container {
+      background-color: rgb(247, 247, 247);
+      border-radius: 3px;
+      position: relative;
+      overflow: hidden;
+      height: 150px;
+      .grad {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 222;
+        transition: all 0.3s ease;
+      }
+      &:hover .grad {
+        background-image: linear-gradient(to bottom, rgba(255,0,0,0), rgba(0, 0, 0, 0.387));
+      }
+      &:hover .actions {
+        bottom: 10px;
+      }
+      .actions {
+        display: flex;
+        justify-content: center;
+        column-gap: 20px;
+        position: absolute;
+        bottom: -25px;
+        left: 0;
+        width: 100%;
+        z-index: 333;
+        transition: all 0.3s ease;
+
+        .action {
+          background-color: #0a58ca;
+          padding: 4px 10px;
+          border-radius: 4px;
+          cursor: pointer;
+          color: #fff;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+  }
+  .add-banner {
     background-color: #fff;
     padding: 30px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    .banners {
+      display: flex;
+      row-gap: 10px;
+      column-gap: 10px;
+      flex-wrap: wrap;
+    }
     .input-container {
       display: flex;
-      flex-direction: column;
       margin-top: 50px;
-      justify-content: center;
-      align-items: center;
-
+      text-align: center;
       label {
         cursor: pointer;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        background-color: aliceblue;
+        border: 2px dashed #ddd;
+        width: 200px;
+        height: 200px;
+        padding: 5px;
+        margin-bottom: 15px;
 
         svg {
           height: 30px;
@@ -67,9 +141,26 @@ h6 {
           display: none;
         }
       }
+      form {
+        select {
+          width: 50%;
+          padding: 2px;
+          border-radius: 3px;
+          text-align: center;
+        }
+        input[type="submit"] {
+          margin-top: 15px ;
+          border-radius: 4px;
+          border: 1px solid #ddd;
+          background-color: #0a58ca;
+          color: #fff;
+          width: 120px;
+          cursor: pointer;
+        }
+      }
     }
     h2, h4 {
-      margin: 10px 0;
+      margin: 0;
     }
   }
 }
