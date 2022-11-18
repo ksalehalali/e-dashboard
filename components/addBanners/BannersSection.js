@@ -1,8 +1,5 @@
-import { message } from "antd";
-import axios from "axios";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
 
 function BannersSection({ sectionNumber, banners, handleDelete }) {
     const [bannersList, setBannersList] = useState(banners);
